@@ -8,6 +8,7 @@ interface UseStreamersResult {
   isLoading: boolean;
   error: string | null;
   lastUpdated: Date | null;
+  refresh: () => void;
 }
 
 export function useStreamers(): UseStreamersResult {
@@ -37,5 +38,5 @@ export function useStreamers(): UseStreamersResult {
     return () => clearInterval(interval);
   }, [fetchStreamers]);
 
-  return { streamers, isLoading, error, lastUpdated };
+  return { streamers, isLoading, error, lastUpdated, refresh: fetchStreamers };
 }

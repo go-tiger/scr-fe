@@ -1,7 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import { useStreamers } from '@/hooks/useStreamers';
 import { StreamerGrid } from '@/components/StreamerGrid';
+import { AddStreamerModal } from '@/components/AddStreamerModal';
 
 function formatTime(date: Date): string {
   return date.toLocaleTimeString('ko-KR', {
@@ -12,7 +14,8 @@ function formatTime(date: Date): string {
 }
 
 export default function Home() {
-  const { streamers, isLoading, error, lastUpdated } = useStreamers();
+  const { streamers, isLoading, error, lastUpdated, refresh } = useStreamers();
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const liveCount = streamers.filter((s) => s.isLive).length;
 
@@ -30,12 +33,20 @@ export default function Home() {
               </span>
             )}
           </div>
-          <div className="text-xs text-gray-500">
-            {isLoading && <span className="animate-pulse">불러오는 중...</span>}
-            {error && <span className="text-red-400">오류: {error}</span>}
-            {lastUpdated && !isLoading && (
-              <span>마지막 갱신: {formatTime(lastUpdated)}</span>
-            )}
+          <div className="flex items-center gap-3">
+            <div className="text-xs text-gray-500">
+              {isLoading && <span className="animate-pulse">불러오는 중...</span>}
+              {error && <span className="text-red-400">오류: {error}</span>}
+              {lastUpdated && !isLoading && (
+                <span>마지막 갱신: {formatTime(lastUpdated)}</span>
+              )}
+            </div>
+            <button
+              onClick={() => setShowAddModal(true)}
+              className="text-xs bg-white text-gray-950 font-semibold px-3 py-1.5 rounded-lg hover:bg-gray-200 transition-colors"
+            >
+              + 추가
+            </button>
           </div>
         </div>
       </header>
@@ -60,6 +71,13 @@ export default function Home() {
           <StreamerGrid streamers={streamers} />
         )}
       </main>
+
+      {showAddModal && (
+        <AddStreamerModal
+          onClose={() => setShowAddModal(false)}
+          onAdded={refresh}
+        />
+      )}
     </div>
   );
 }
