@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import Image from 'next/image';
 import { Streamer } from '@/types/streamer';
 import { PlatformBadge } from './PlatformBadge';
@@ -5,6 +8,7 @@ import { LiveBadge } from './LiveBadge';
 
 interface StreamerCardProps {
   streamer: Streamer;
+  onDelete?: (id: string) => void;
 }
 
 function formatViewerCount(count: number): string {
@@ -13,8 +17,20 @@ function formatViewerCount(count: number): string {
   return count.toLocaleString();
 }
 
-export function StreamerCard({ streamer }: StreamerCardProps) {
-  const { name, profileImage, isLive, title, thumbnail, viewerCount, platform, category } = streamer;
+export function StreamerCard({ streamer, onDelete }: StreamerCardProps) {
+  const { id, name, profileImage, isLive, title, thumbnail, viewerCount, platform, category } = streamer;
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  async function handleDelete() {
+    if (!confirm(`${name}을(를) 삭제할까요?`)) return;
+    setIsDeleting(true);
+    try {
+      await fetch(`http://localhost:3000/streamers/${id}`, { method: 'DELETE' });
+      onDelete?.(id);
+    } finally {
+      setIsDeleting(false);
+    }
+  }
 
   return (
     <div className="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 hover:border-gray-600 transition-colors group">
@@ -84,7 +100,17 @@ export function StreamerCard({ streamer }: StreamerCardProps) {
               />
             </div>
           )}
-          <span className="font-semibold text-white text-sm truncate">{name}</span>
+          <span className="font-semibold text-white text-sm truncate flex-1">{name}</span>
+          {onDelete && (
+            <button
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="opacity-0 group-hover:opacity-100 transition-opacity text-gray-600 hover:text-red-400 disabled:opacity-30 text-xs px-1"
+              title="삭제"
+            >
+              ✕
+            </button>
+          )}
         </div>
 
         {title && (

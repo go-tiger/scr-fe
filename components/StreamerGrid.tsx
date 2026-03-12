@@ -3,9 +3,10 @@ import { StreamerCard } from './StreamerCard';
 
 interface StreamerGridProps {
   streamers: Streamer[];
+  onDelete?: (id: string) => void;
 }
 
-export function StreamerGrid({ streamers }: StreamerGridProps) {
+export function StreamerGrid({ streamers, onDelete }: StreamerGridProps) {
   const sorted = [...streamers].sort((a, b) => {
     if (a.isLive && !b.isLive) return -1;
     if (!a.isLive && b.isLive) return 1;
@@ -27,7 +28,7 @@ export function StreamerGrid({ streamers }: StreamerGridProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {sorted.map((streamer) => (
-        <StreamerCard key={streamer.id} streamer={streamer} />
+        <StreamerCard key={streamer.id} streamer={streamer} onDelete={onDelete} />
       ))}
     </div>
   );

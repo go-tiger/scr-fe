@@ -68,7 +68,7 @@ export default function Home() {
             ))}
           </div>
         ) : (
-          <StreamerGrid streamers={streamers} />
+          <StreamerGrid streamers={streamers} onDelete={refresh} />
         )}
       </main>
 
