@@ -18,10 +18,14 @@ function formatViewerCount(count: number): string {
 }
 
 export function StreamerCard({ streamer, onDelete }: StreamerCardProps) {
-  const { id, name, profileImage, isLive, title, thumbnail, viewerCount, platform, category, tags } = streamer;
+  const { id, name, profileImage, isLive, title, thumbnail, viewerCount, platform, channelId, category, tags } = streamer;
+  const liveUrl = platform === 'chzzk'
+    ? `https://chzzk.naver.com/live/${channelId}`
+    : `https://www.sooplive.co.kr/${channelId}`;
   const [isDeleting, setIsDeleting] = useState(false);
 
-  async function handleDelete() {
+  async function handleDelete(e: React.MouseEvent) {
+    e.preventDefault();
     if (!confirm(`${name}을(를) 삭제할까요?`)) return;
     setIsDeleting(true);
     try {
@@ -33,7 +37,7 @@ export function StreamerCard({ streamer, onDelete }: StreamerCardProps) {
   }
 
   return (
-    <div className="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 hover:border-gray-600 transition-colors group">
+    <a href={liveUrl} target="_blank" rel="noopener noreferrer" className="block bg-gray-900 rounded-xl overflow-hidden border border-gray-800 hover:border-gray-600 transition-colors group">
       {/* 썸네일 / 프로필 영역 */}
       <div className="relative aspect-video bg-gray-800 overflow-hidden">
         {isLive && thumbnail ? (
@@ -132,6 +136,6 @@ export function StreamerCard({ streamer, onDelete }: StreamerCardProps) {
           <p className="text-gray-600 text-xs mt-1">오프라인</p>
         )}
       </div>
-    </div>
+    </a>
   );
 }
