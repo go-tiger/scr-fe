@@ -47,9 +47,16 @@ export default function Home() {
               📡 스트리밍 컨트롤룸
             </h1>
             {!isLoading && (
-              <span className="text-xs bg-gray-800 text-gray-400 px-2 py-0.5 rounded-full">
-                {liveCount}명 방송 중
-              </span>
+              <div className="flex items-center gap-2 text-xs text-gray-400">
+                <span>전체 {streamers.length}명</span>
+                <span className="text-gray-700">|</span>
+                <span className="flex items-center gap-1 text-red-400">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                  LIVE {liveCount}명
+                </span>
+                <span className="text-gray-700">|</span>
+                <span>OFF {streamers.length - liveCount}명</span>
+              </div>
             )}
           </div>
           <div className="flex items-center gap-3">

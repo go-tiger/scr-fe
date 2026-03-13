@@ -18,7 +18,7 @@ function formatViewerCount(count: number): string {
 }
 
 export function StreamerCard({ streamer, onDelete }: StreamerCardProps) {
-  const { id, name, profileImage, isLive, title, thumbnail, viewerCount, platform, category } = streamer;
+  const { id, name, profileImage, isLive, title, thumbnail, viewerCount, platform, category, tags } = streamer;
   const [isDeleting, setIsDeleting] = useState(false);
 
   async function handleDelete() {
@@ -118,6 +118,15 @@ export function StreamerCard({ streamer, onDelete }: StreamerCardProps) {
         )}
         {category && (
           <p className="text-gray-500 text-xs mt-1 truncate">{category}</p>
+        )}
+        {tags && tags.length > 0 && (
+          <div className="flex flex-wrap gap-1 mt-1.5">
+            {tags.map((tag) => (
+              <span key={tag} className="text-xs bg-gray-800 text-gray-400 px-1.5 py-0.5 rounded">
+                {tag}
+              </span>
+            ))}
+          </div>
         )}
         {!isLive && (
           <p className="text-gray-600 text-xs mt-1">오프라인</p>
