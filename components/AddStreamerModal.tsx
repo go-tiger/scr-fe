@@ -21,7 +21,7 @@ export function AddStreamerModal({ onClose, onAdded }: AddStreamerModalProps) {
     setError(null);
 
     try {
-      const res = await fetch('http://localhost:3000/streamers', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/streamers`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ platform, channelId: channelId.trim(), name: name.trim() }),

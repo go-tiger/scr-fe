@@ -25,7 +25,7 @@ export function StreamerCard({ streamer, onDelete }: StreamerCardProps) {
     if (!confirm(`${name}을(를) 삭제할까요?`)) return;
     setIsDeleting(true);
     try {
-      await fetch(`http://localhost:3000/streamers/${id}`, { method: 'DELETE' });
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/streamers/${id}`, { method: 'DELETE' });
       onDelete?.(id);
     } finally {
       setIsDeleting(false);

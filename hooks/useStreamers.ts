@@ -19,7 +19,7 @@ export function useStreamers(): UseStreamersResult {
 
   const fetchStreamers = useCallback(async () => {
     try {
-      const res = await fetch('http://localhost:3000/streamers');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/streamers`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data: Streamer[] = await res.json();
       setStreamers(data);
