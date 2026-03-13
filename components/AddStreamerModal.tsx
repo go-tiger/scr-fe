@@ -11,7 +11,6 @@ interface AddStreamerModalProps {
 export function AddStreamerModal({ onClose, onAdded }: AddStreamerModalProps) {
   const [platform, setPlatform] = useState<Platform>('chzzk');
   const [channelId, setChannelId] = useState('');
-  const [name, setName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,7 +23,7 @@ export function AddStreamerModal({ onClose, onAdded }: AddStreamerModalProps) {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/streamers`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ platform, channelId: channelId.trim(), name: name.trim() }),
+        body: JSON.stringify({ platform, channelId: channelId.trim() }),
       });
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
@@ -79,19 +78,6 @@ export function AddStreamerModal({ onClose, onAdded }: AddStreamerModalProps) {
               value={channelId}
               onChange={(e) => setChannelId(e.target.value)}
               placeholder={platform === 'chzzk' ? 'chzzk.naver.com/채널ID' : 'sooplive.co.kr/채널ID'}
-              required
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-gray-500"
-            />
-          </div>
-
-          {/* 이름 */}
-          <div>
-            <label className="block text-xs text-gray-400 mb-1.5">이름</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="스트리머 이름"
               required
               className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-gray-500"
             />
