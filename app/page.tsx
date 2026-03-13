@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useStreamers } from '@/hooks/useStreamers';
 import { StreamerGrid } from '@/components/StreamerGrid';
 import { AddStreamerModal } from '@/components/AddStreamerModal';
+
+const POLL_INTERVAL = 30;
 
 function formatTime(date: Date): string {
   return date.toLocaleTimeString('ko-KR', {
@@ -13,11 +15,28 @@ function formatTime(date: Date): string {
   });
 }
 
+function useCountdown(lastUpdated: Date | null): number {
+  const [seconds, setSeconds] = useState(POLL_INTERVAL);
+
+  useEffect(() => {
+    if (!lastUpdated) return;
+    setSeconds(POLL_INTERVAL);
+    const timer = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - lastUpdated.getTime()) / 1000);
+      setSeconds(Math.max(0, POLL_INTERVAL - elapsed));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [lastUpdated]);
+
+  return seconds;
+}
+
 export default function Home() {
   const { streamers, isLoading, error, lastUpdated, refresh } = useStreamers();
   const [showAddModal, setShowAddModal] = useState(false);
 
   const liveCount = streamers.filter((s) => s.isLive).length;
+  const countdown = useCountdown(lastUpdated);
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
@@ -38,7 +57,7 @@ export default function Home() {
               {isLoading && <span className="animate-pulse">불러오는 중...</span>}
               {error && <span className="text-red-400">오류: {error}</span>}
               {lastUpdated && !isLoading && (
-                <span>마지막 갱신: {formatTime(lastUpdated)}</span>
+                <span>마지막 갱신: {formatTime(lastUpdated)} · {countdown}초 후 갱신</span>
               )}
             </div>
             <button
