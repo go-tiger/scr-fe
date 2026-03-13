@@ -1,6 +1,7 @@
 export type Platform = 'chzzk' | 'soop';
 
 export interface Streamer {
+  dbId: number;
   id: string;
   platform: Platform;
   channelId: string;
