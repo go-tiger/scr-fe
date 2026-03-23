@@ -14,4 +14,5 @@ export interface Streamer {
   broadNo?: number;
   category?: string;
   tags?: string[];
+  isGeoBlocked?: boolean;
 }

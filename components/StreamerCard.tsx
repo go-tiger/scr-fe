@@ -18,7 +18,7 @@ function formatViewerCount(count: number): string {
 }
 
 export function StreamerCard({ streamer, onDelete }: StreamerCardProps) {
-  const { id, name, profileImage, isLive, title, thumbnail, viewerCount, platform, channelId, category, tags } = streamer;
+  const { id, name, profileImage, isLive, isGeoBlocked, title, thumbnail, viewerCount, platform, channelId, category, tags } = streamer;
   const liveUrl = platform === 'chzzk'
     ? `https://chzzk.naver.com/live/${channelId}`
     : `https://www.sooplive.co.kr/${channelId}`;
@@ -75,7 +75,7 @@ export function StreamerCard({ streamer, onDelete }: StreamerCardProps) {
 
         {/* 뱃지 */}
         <div className="absolute top-2 left-2">
-          <LiveBadge isLive={isLive} />
+          <LiveBadge isLive={isLive} isGeoBlocked={isGeoBlocked} />
         </div>
         <div className="absolute top-2 right-2">
           <PlatformBadge platform={platform} />

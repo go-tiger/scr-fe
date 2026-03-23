@@ -1,8 +1,17 @@
 interface LiveBadgeProps {
   isLive: boolean;
+  isGeoBlocked?: boolean;
 }
 
-export function LiveBadge({ isLive }: LiveBadgeProps) {
+export function LiveBadge({ isLive, isGeoBlocked }: LiveBadgeProps) {
+  if (isGeoBlocked) {
+    return (
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-bold tracking-wide bg-yellow-600 text-white">
+        🌐 해외차단
+      </span>
+    );
+  }
+
   return (
     <span
       className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wide ${
