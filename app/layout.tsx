@@ -5,7 +5,7 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: '스트리밍 컨트롤룸',
+  title: '방송 모니터링',
   description: 'CHZZK · SOOP 스트리머 실시간 모니터링',
 };
 

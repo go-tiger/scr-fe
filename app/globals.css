@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@source inline("xl:grid-cols-4 xl:grid-cols-5 xl:grid-cols-6 xl:grid-cols-7");
+
 :root {
   color-scheme: dark;
 }

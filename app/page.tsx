@@ -34,17 +34,18 @@ function useCountdown(lastUpdated: Date | null): number {
 export default function Home() {
   const { streamers, isLoading, error, lastUpdated, refresh } = useStreamers();
   const [showAddModal, setShowAddModal] = useState(false);
+  const [columns, setColumns] = useState(4);
 
   const liveCount = streamers.filter((s) => s.isLive).length;
   const countdown = useCountdown(lastUpdated);
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
-      <header className="sticky top-0 z-10 bg-gray-950/90 backdrop-blur border-b border-gray-800">
+      <header className="sticky top-0 z-50 bg-gray-950 border-b border-gray-800">
         <div className="max-w-screen-2xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <h1 className="text-lg font-bold tracking-tight">
-              📡 스트리밍 컨트롤룸
+              📡 방송 모니터링
             </h1>
             {!isLoading && (
               <div className="flex items-center gap-2 text-xs text-gray-400">
@@ -67,6 +68,16 @@ export default function Home() {
                 <span>마지막 갱신: {formatTime(lastUpdated)} · {countdown}초 후 갱신</span>
               )}
             </div>
+            <select
+              value={columns}
+              onChange={(e) => setColumns(Number(e.target.value))}
+              className="text-xs bg-gray-800 text-gray-300 border border-gray-700 rounded-lg px-2 py-1.5 cursor-pointer focus:outline-none focus:border-gray-500"
+            >
+              <option value={4}>4열</option>
+              <option value={5}>5열</option>
+              <option value={6}>6열</option>
+              <option value={7}>7열</option>
+            </select>
             <button
               onClick={() => setShowAddModal(true)}
               className="text-xs bg-white text-gray-950 font-semibold px-3 py-1.5 rounded-lg hover:bg-gray-200 transition-colors"
@@ -94,7 +105,7 @@ export default function Home() {
             ))}
           </div>
         ) : (
-          <StreamerGrid streamers={streamers} onDelete={refresh} />
+          <StreamerGrid streamers={streamers} onDelete={refresh} columns={columns} />
         )}
       </main>
 
